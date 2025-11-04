@@ -29,8 +29,20 @@ pipeline {
                 """
             }
         }
+
+        stage("Port Forward") {
+            steps {
+                sh """
+                echo "Forwarding service port to localhost..."
+                # Ejecutar en background para que no bloquee Jenkins
+                nohup kubectl port-forward svc/demo-service 8082:80 > port-forward.log 2>&1 &
+                echo "Port-forward started on localhost:8082 -> svc/demo-service:80"
+                """
+            }
+        }
     }
 }
+
 
 
 
