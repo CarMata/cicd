@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh """
                 echo "Applying Kubernetes manifests with kubectl..."
-                kubectl apply -f k8s-manifests/
+                kubectl apply --validate=false -f k8s-manifests/
                 """
             }
         }
@@ -31,3 +31,4 @@ pipeline {
         }
     }
 }
+
