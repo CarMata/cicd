@@ -30,16 +30,17 @@ resource "kubernetes_deployment" "winning" {
 
 resource "kubernetes_service" "winning" {
   metadata {
-    name = "winning-number-service"
+    name = var.app_name
   }
 
   spec {
     selector = { app = "winning-number-service" }
     port {
-      port        = 8085
-      target_port = 8085
+      port        = 8086
+      target_port = 8086
     }
     type = "NodePort"
   }
 }
+
 
