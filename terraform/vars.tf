@@ -1,5 +1,5 @@
 variable "app_name" {
-  default = "winning-number-service"
+  default = "winning-number-service-terraform"
 }
 variable "image" {
   default = "carmata/winning-number-service:latest"
@@ -10,4 +10,5 @@ variable "container_port" {
 variable "node_port" {
   default = 30185
 }
+
 
