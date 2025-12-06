@@ -1,34 +1,30 @@
-resource "kubernetes_deployment" "app" {
+resource "kubernetes_deployment" "winning" {
   metadata {
-    name = var.app_name
+    name = "winning-number-service"
     labels = {
-      app = var.app_name
+      app = "winning-number-service"
     }
   }
 
   spec {
     replicas = 1
-
     selector {
       match_labels = {
-        app = var.app_name
+        app = "winning-number-service"
       }
     }
-
     template {
       metadata {
         labels = {
-          app = var.app_name
+          app = "winning-number-service"
         }
       }
-
       spec {
         container {
-          name  = var.app_name
-          image = var.image
-
+          name  = "winning-number-service"
+          image = var.image_tag
           port {
-            container_port = var.container_port
+            container_port = 8086
           }
         }
       }
