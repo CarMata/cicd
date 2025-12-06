@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "winning" {
   metadata {
-    name = "winning-number-service"
+    name = var.app_name
     labels = { app = "winning-number-service" }
   }
 
@@ -17,10 +17,10 @@ resource "kubernetes_deployment" "winning" {
       }
       spec {
         container {
-          name  = "winning-number-service"
+          name  = var.app_name
           image = "carmata/winning-number-service:latest"
           port {
-            container_port = 8085
+            container_port = 8086
           }
         }
       }
@@ -42,3 +42,4 @@ resource "kubernetes_service" "winning" {
     type = "NodePort"
   }
 }
+
