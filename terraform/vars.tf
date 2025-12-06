@@ -5,8 +5,9 @@ variable "image" {
   default = "carmata/winning-number-service:latest"
 }
 variable "container_port" {
-  default = 8085
+  default = 8086
 }
 variable "node_port" {
-  default = 30080
+  default = 30185
 }
+
