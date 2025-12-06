@@ -1,12 +1,44 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.31.0"
+resource "kubernetes_deployment" "winning" {
+  metadata {
+    name = "winning-number-service"
+    labels = { app = "winning-number-service" }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = { app = "winning-number-service" }
+    }
+
+    template {
+      metadata {
+        labels = { app = "winning-number-service" }
+      }
+      spec {
+        container {
+          name  = "winning-number-service"
+          image = "carmata/winning-number-service:latest"
+          port {
+            container_port = 8085
+          }
+        }
+      }
     }
   }
 }
 
-provider "kubernetes" {
-  config_path = "~/.kube/config"   # Igual que tu Jenkinsfile actual
+resource "kubernetes_service" "winning" {
+  metadata {
+    name = "winning-number-service"
+  }
+
+  spec {
+    selector = { app = "winning-number-service" }
+    port {
+      port        = 8085
+      target_port = 8085
+    }
+    type = "NodePort"
+  }
 }
