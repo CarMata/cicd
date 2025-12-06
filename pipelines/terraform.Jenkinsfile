@@ -6,45 +6,33 @@ pipeline {
     }
 
     stages {
-
-        stage('Checkout Infra Code') {
+        stage('Checkout Infra') {
             steps {
-                checkout scm
-                sh "ls -la"
+                git url: 'https://github.com/CarMata/cicd.git', branch: 'main'
             }
         }
 
         stage('Terraform Init') {
             steps {
-                dir('terraform') {
-                    sh 'terraform init'
-                }
+                sh 'cd terraform && terraform init'
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                sh 'cd terraform && terraform validate'
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                dir('terraform') {
-                    sh 'terraform plan -out=tfplan'
-                }
+                sh 'cd terraform && terraform plan'
             }
         }
 
         stage('Terraform Apply') {
-            input {
-                message "¿Aplicar cambios?"
-            }
             steps {
-                dir('terraform') {
-                    sh 'terraform apply -auto-approve tfplan'
-                }
-            }
-        }
-
-        stage('Verify Deployment') {
-            steps {
-                sh "kubectl get pods -o wide"
-                sh "kubectl get svc -o wide"
+                sh 'cd terraform && terraform apply -auto-approve'
             }
         }
     }
