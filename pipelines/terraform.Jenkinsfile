@@ -6,38 +6,46 @@ pipeline {
     }
 
     stages {
-        stage("Checkout") {
+
+        stage('Checkout Infra Code') {
             steps {
                 checkout scm
+                sh "ls -la"
             }
         }
 
-        stage("Init Terraform") {
+        stage('Terraform Init') {
             steps {
-                sh """
-                cd terraform
-                terraform init
-                """
+                dir('terraform') {
+                    sh 'terraform init'
+                }
             }
         }
 
-        stage("Plan Terraform") {
+        stage('Terraform Plan') {
             steps {
-                sh """
-                cd terraform
-                terraform plan
-                """
+                dir('terraform') {
+                    sh 'terraform plan -out=tfplan'
+                }
             }
         }
 
-        stage("Apply Terraform") {
+        stage('Terraform Apply') {
+            input {
+                message "¿Aplicar cambios?"
+            }
             steps {
-                sh """
-                cd terraform
-                terraform apply -auto-approve
-                """
+                dir('terraform') {
+                    sh 'terraform apply -auto-approve tfplan'
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh "kubectl get pods -o wide"
+                sh "kubectl get svc -o wide"
             }
         }
     }
 }
-
