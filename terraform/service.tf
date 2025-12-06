@@ -1,4 +1,4 @@
-resource "kubernetes_service" "service" {
+resource "kubernetes_service" "winning" {
   metadata {
     name = var.app_name
   }
@@ -17,3 +17,4 @@ resource "kubernetes_service" "service" {
     type = "NodePort"
   }
 }
+
